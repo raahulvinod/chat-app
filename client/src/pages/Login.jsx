@@ -19,7 +19,7 @@ const Login = () => {
           </div>
           <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
             <div>
-              <label className="font-medium text-gray-800">Username</label>
+              <label className="font-medium text-gray-50">Username</label>
               <input
                 type="email"
                 required
@@ -27,7 +27,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label className="font-medium text-gray-900">Password</label>
+              <label className="font-medium text-gray-50">Password</label>
               <input
                 type="password"
                 required
