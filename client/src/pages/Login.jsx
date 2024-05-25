@@ -1,6 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Login = () => {
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .email('Invalid email address')
+        .required('Email Required'),
+      password: Yup.string()
+        .min(6, 'Password must be at least 6 characters')
+        .required('Password Required'),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+      // Handle form submission
+    },
+  });
+
   return (
     <div>
       <main className="w-full h-screen flex flex-col items-center justify-center px-4">
@@ -17,44 +39,58 @@ const Login = () => {
               </h3>
             </div>
           </div>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+          <form onSubmit={formik.handleSubmit} className="space-y-5">
             <div>
-              <label className="font-medium text-gray-50">Username</label>
+              <label className="font-medium text-gray-50" htmlFor="username">
+                Username
+              </label>
               <input
+                id="username"
+                name="username"
                 type="email"
-                required
-                className="w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.username}
+                className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
+                  formik.touched.username && formik.errors.username
+                    ? 'border-red-600'
+                    : ''
+                }`}
               />
+              {formik.touched.username && formik.errors.username ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.username}
+                </div>
+              ) : null}
             </div>
             <div>
-              <label className="font-medium text-gray-50">Password</label>
+              <label className="font-medium text-gray-50" htmlFor="password">
+                Password
+              </label>
               <input
+                id="password"
+                name="password"
                 type="password"
-                required
-                className="w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
+                  formik.touched.password && formik.errors.password
+                    ? 'border-red-600'
+                    : ''
+                }`}
               />
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.password}
+                </div>
+              ) : null}
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-x-3">
-                <input
-                  type="checkbox"
-                  id="remember-me-checkbox"
-                  className="checkbox-item peer hidden"
-                />
-                <label
-                  htmlFor="remember-me-checkbox"
-                  className="relative flex w-5 h-5 bg-white peer-checked:bg-orange-600 rounded-md border ring-offset-2 ring-indigo-600 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
-                ></label>
-                <span className="text-orange-600">Remember me</span>
-              </div>
-              <a
-                href="javascript:void(0)"
-                className="text-center text-orange-600 hover:text-orange-700"
-              >
-                Forgot password?
-              </a>
-            </div>
-            <button className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-700 active:bg-orange-600 rounded-lg duration-150">
+
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-700 active:bg-orange-600 rounded-lg duration-150"
+            >
               Sign in
             </button>
           </form>
@@ -65,7 +101,7 @@ const Login = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_17_40)">
+              <g clipPath="url(#clip0_17_40)">
                 <path
                   d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z"
                   fill="#4285F4"
@@ -93,12 +129,12 @@ const Login = () => {
           </button>
           <p className="text-center text-gray-800">
             Don't have an account?{' '}
-            <a
-              href="javascript:void(0)"
+            <Link
+              to={'/signup'}
               className="font-medium text-orange-700 hover:text-orange-500"
             >
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </main>

@@ -1,77 +1,188 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Signup = () => {
+  const formik = useFormik({
+    initialValues: {
+      fullname: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+      gender: '',
+    },
+    validationSchema: Yup.object({
+      fullname: Yup.string()
+        .min(2, 'Fullname must be at least 2 characters')
+        .required('Name Required'),
+      username: Yup.string()
+        .min(2, 'Username must be at least 3 characters')
+        .required('Username Required'),
+      password: Yup.string()
+        .min(6, 'Password must be at least 6 characters')
+        .required('Password Required'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Required'),
+      gender: Yup.string().required('Required'),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+      // Handle form submission
+    },
+  });
+
   return (
     <div>
       <main className="w-full h-screen flex flex-col items-center justify-center px-4">
         <div className="max-w-sm w-full text-gray-600 space-y-2">
           <div className="text-center">
-            <img
-              src="https://cdn.iconscout.com/icon/free/png-256/free-chat-2639493-2187526.png?f=webp"
-              width={150}
-              className="mx-auto"
-            />
             <div className="mt-1">
               <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">
-                Signup
+                Welcome to ChatApp!
               </h3>
+              <p>Create an account to get started!</p>
             </div>
           </div>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
+          <form onSubmit={formik.handleSubmit} className="space-y-2">
             <div>
-              <label className="font-medium text-gray-50">Fullname</label>
+              <label className="font-medium text-gray-50" htmlFor="fullname">
+                Fullname
+              </label>
               <input
+                id="fullname"
+                name="fullname"
                 type="text"
-                required
-                className="w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.fullname}
+                className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
+                  formik.touched.fullname && formik.errors.fullname
+                    ? 'border-red-600'
+                    : ''
+                }`}
               />
+              {formik.touched.fullname && formik.errors.fullname ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.fullname}
+                </div>
+              ) : null}
             </div>
             <div>
-              <label className="font-medium text-gray-50">Username</label>
+              <label className="font-medium text-gray-50" htmlFor="username">
+                Username
+              </label>
               <input
+                id="username"
+                name="username"
                 type="text"
-                required
-                className="w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.username}
+                className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
+                  formik.touched.username && formik.errors.username
+                    ? 'border-red-600'
+                    : ''
+                }`}
               />
+              {formik.touched.username && formik.errors.username ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.username}
+                </div>
+              ) : null}
             </div>
             <div>
-              <label className="font-medium text-gray-50">Password</label>
+              <label className="font-medium text-gray-50" htmlFor="password">
+                Password
+              </label>
               <input
+                id="password"
+                name="password"
                 type="password"
-                required
-                className="w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
+                  formik.touched.password && formik.errors.password
+                    ? 'border-red-600'
+                    : ''
+                }`}
               />
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.password}
+                </div>
+              ) : null}
             </div>
             <div>
-              <label className="font-medium text-gray-50">
+              <label
+                className="font-medium text-gray-50"
+                htmlFor="confirmPassword"
+              >
                 Confirm Password
               </label>
               <input
+                id="confirmPassword"
+                name="confirmPassword"
                 type="password"
-                required
-                className="w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.confirmPassword}
+                className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                    ? 'border-red-600'
+                    : ''
+                }`}
               />
+              {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
             </div>
             <div>
-              <label className="font-medium text-gray-50">Gender</label>
+              <label className="font-medium text-gray-50" htmlFor="gender">
+                Gender
+              </label>
               <div className="mt-2">
                 <label className="inline-flex items-center">
                   <input
-                    type="checkbox"
-                    className="form-checkbox text-orange-600"
+                    id="gender"
+                    name="gender"
+                    type="radio"
+                    value="male"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="form-radio text-orange-600"
                   />
                   <span className="ml-2 text-gray-50">Male</span>
                 </label>
                 <label className="inline-flex items-center ml-4">
                   <input
-                    type="checkbox"
-                    className="form-checkbox text-orange-600"
+                    id="gender"
+                    name="gender"
+                    type="radio"
+                    value="female"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="form-radio text-orange-600"
                   />
                   <span className="ml-2 text-gray-50">Female</span>
                 </label>
               </div>
+              {formik.touched.gender && formik.errors.gender ? (
+                <div className="text-red-600 mt-1 text-sm">
+                  {formik.errors.gender}
+                </div>
+              ) : null}
             </div>
-            <button className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-700 active:bg-orange-600 rounded-lg duration-150">
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-700 active:bg-orange-600 rounded-lg duration-150"
+            >
               Sign up
             </button>
           </form>
@@ -82,7 +193,7 @@ const Signup = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_17_40)">
+              <g clipPath="url(#clip0_17_40)">
                 <path
                   d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z"
                   fill="#4285F4"
@@ -109,13 +220,13 @@ const Signup = () => {
             <span className="text-gray-800">Continue with Google</span>
           </button>
           <p className="text-center text-gray-800">
-            Already have an account?
-            <a
-              href="javascript:void(0)"
+            Already have an account?{' '}
+            <Link
+              to={'/login'}
               className="font-medium text-orange-700 hover:text-orange-500"
             >
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </main>
