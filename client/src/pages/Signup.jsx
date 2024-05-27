@@ -20,7 +20,7 @@ const Signup = () => {
         .min(2, 'Fullname must be at least 2 characters')
         .required('Name Required'),
       username: Yup.string()
-        .min(2, 'Username must be at least 3 characters')
+        .min(3, 'Username must be at least 3 characters')
         .required('Username Required'),
       password: Yup.string()
         .min(6, 'Password must be at least 6 characters')

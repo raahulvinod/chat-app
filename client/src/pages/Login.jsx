@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import useLogin from '../hooks/useLogin';
 
 const Login = () => {
+  const { loading, login } = useLogin();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -11,15 +13,15 @@ const Login = () => {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .email('Invalid email address')
-        .required('Email Required'),
+        .min(3, 'Username must be at least 3 characters')
+        .required('Username Required'),
       password: Yup.string()
         .min(6, 'Password must be at least 6 characters')
         .required('Password Required'),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
       // Handle form submission
+      await login(values);
     },
   });
 
@@ -47,7 +49,7 @@ const Login = () => {
               <input
                 id="username"
                 name="username"
-                type="email"
+                type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.username}
@@ -90,8 +92,13 @@ const Login = () => {
             <button
               type="submit"
               className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-700 active:bg-orange-600 rounded-lg duration-150"
+              disabled={loading}
             >
-              Sign in
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                ' Login'
+              )}
             </button>
           </form>
           <button className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
