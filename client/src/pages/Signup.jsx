@@ -185,8 +185,13 @@ const Signup = () => {
             <button
               type="submit"
               className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-700 active:bg-orange-600 rounded-lg duration-150"
+              disabled={loading}
             >
-              Sign up
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                'Sign up'
+              )}
             </button>
           </form>
           <button className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
