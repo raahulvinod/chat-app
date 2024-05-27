@@ -2,18 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import useSignup from '../../hooks/useSignup';
 
 const Signup = () => {
+  const { loading, signup } = useSignup();
+
   const formik = useFormik({
     initialValues: {
-      fullname: '',
+      fullName: '',
       username: '',
       password: '',
       confirmPassword: '',
       gender: '',
     },
     validationSchema: Yup.object({
-      fullname: Yup.string()
+      fullName: Yup.string()
         .min(2, 'Fullname must be at least 2 characters')
         .required('Name Required'),
       username: Yup.string()
@@ -27,9 +30,9 @@ const Signup = () => {
         .required('Required'),
       gender: Yup.string().required('Required'),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
       // Handle form submission
+      await signup(values);
     },
   });
 
@@ -51,21 +54,21 @@ const Signup = () => {
                 Fullname
               </label>
               <input
-                id="fullname"
-                name="fullname"
+                id="fullName"
+                name="fullName"
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.fullname}
+                value={formik.values.fullName}
                 className={`w-full mt-2 px-3 py-2 text-gray-950 bg-transparent outline-none border focus:border-orange-600 shadow-sm rounded-lg ${
-                  formik.touched.fullname && formik.errors.fullname
+                  formik.touched.fullName && formik.errors.fullName
                     ? 'border-red-600'
                     : ''
                 }`}
               />
-              {formik.touched.fullname && formik.errors.fullname ? (
+              {formik.touched.fullName && formik.errors.fullName ? (
                 <div className="text-red-600 mt-1 text-sm">
-                  {formik.errors.fullname}
+                  {formik.errors.fullName}
                 </div>
               ) : null}
             </div>
