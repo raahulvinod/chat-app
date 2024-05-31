@@ -9,14 +9,17 @@ const useLogin = () => {
   const login = async ({ username, password }) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/auth/login`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        }
+      );
 
       const data = await res.json();
 
