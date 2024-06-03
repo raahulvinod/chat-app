@@ -1,6 +1,6 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
-import gnerateTokenAndCookie from '../utils/generateToken.js';
+import generateTokenAndCookie from '../utils/generateToken.js';
 
 export const signup = async (req, res) => {
   try {
@@ -34,7 +34,7 @@ export const signup = async (req, res) => {
 
     if (newUser) {
       // Generate JWT token
-      gnerateTokenAndCookie(newUser._id, res);
+      generateTokenAndCookie(newUser._id, res);
       await newUser.save();
 
       res.status(201).json({
@@ -64,7 +64,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ error: 'Invalid username or password' });
     }
 
-    gnerateTokenAndCookie(user._id, res);
+    generateTokenAndCookie(user._id, res);
 
     res.status(200).json({
       _id: user._id,
