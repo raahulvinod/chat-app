@@ -13,21 +13,26 @@ import { app, server } from './socket/socket.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+const ORIGIN = process.env.ORIGIN || 'http://localhost:3000';
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
+
+// CORS configuration
 app.use(
   cors({
-    origin: [process.env.ORIGIN],
+    origin: ORIGIN,
     credentials: true,
   })
 );
 
+// Route configurations
 app.use('/api/auth', authRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/users', userRoute);
 
+// Start server
 server.listen(PORT, () => {
   connectDb();
   console.log(`Server running on port ${PORT}`);

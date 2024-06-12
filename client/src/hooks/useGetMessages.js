@@ -11,7 +11,13 @@ const useGetMessages = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_SERVER_DOMAIN}/api/messages/${selectedConversation._id}`
+          import.meta.env.VITE_SERVER_DOMAIN +
+            `/api/messages/${selectedConversation._id}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+          }
         );
         const data = await res.json();
         if (data.error) throw new Error(data.error);
